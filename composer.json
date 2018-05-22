@@ -1,0 +1,33 @@
+{
+    "name": "waleedahmad/pinterest-laravel",
+    "description": "PHP Wrapper for the official Pinterest API",
+    "authors": [
+        {
+            "name": "Waleed Ahmad",
+            "email": "waleedgplus@gmail.com",
+            "homepage": "https://github.com/waleedahmad",
+            "role": "Creator/Developer"
+        }
+    ],
+    "license": "Apache-2.0",
+    "type": "library",
+    "keywords": [
+        "api",
+        "wrapper",
+        "pinterest",
+        "laravel"
+    ],
+    "require": {
+        "php": ">=5.4",
+        "ext-curl": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.7.*",
+        "vlucas/phpdotenv": "^2.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "WaleedAhmad\\Pinterest\\": "src/Pinterest"
+        }
+    }
+}
