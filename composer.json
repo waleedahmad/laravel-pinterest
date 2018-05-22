@@ -1,6 +1,6 @@
 {
     "name": "waleedahmad/pinterest-laravel",
-    "description": "PHP Wrapper for the official Pinterest API",
+    "description": "Laravel Package for the official Pinterest API",
     "authors": [
         {
             "name": "Waleed Ahmad",

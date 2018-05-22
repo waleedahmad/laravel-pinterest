@@ -1,9 +1,4 @@
 ## ![](http://i.imgur.com/cacgQlq.png)  Pinterest API - Laravel
-
-[![](https://travis-ci.org/WaleedAhmad/Pinterest-API-PHP.svg)](https://travis-ci.org/WaleedAhmad/Pinterest-API-PHP)
-[![](https://img.shields.io/scrutinizer/g/WaleedAhmad/Pinterest-API-PHP.svg)](https://scrutinizer-ci.com/g/WaleedAhmad/Pinterest-API-PHP/?branch=master)
-[![](https://img.shields.io/scrutinizer/coverage/g/WaleedAhmad/Pinterest-API-PHP.svg)](https://scrutinizer-ci.com/g/WaleedAhmad/Pinterest-API-PHP/?branch=master)
-[![Packagist](https://img.shields.io/packagist/v/WaleedAhmad/pinterest-api-php.svg)](https://packagist.org/packages/WaleedAhmad/pinterest-api-php)
 -------------------
 
 A Package for using official [Pinterest API](https://dev.pinterest.com) with Laravel.
@@ -20,17 +15,19 @@ To use the Pinterest API you have to register yourself as a developer and [creat
 > The terms `client_id` and `client_secret` are in this case `app_id` and `app_secret`.
 
 ## Installation
-The Pinterest API wrapper is available on Composer.
+This Package is available on Composer.
 
 ```
 composer require waleedahmad/laravel-pinterest
 ```
 
-## Simple Example
+## Usage
+Add service provider for `$providers[]` array in `config/app.php` array.
 ```php
-use WaleedAhmad\Pinterest\Pinterest;
-
-$pinterest = new Pinterest(CLIENT_ID, CLIENT_SECRET);
+'providers' => [
+    [...] // other service providers
+    \WaleedAhmad\Pinterest\ServiceProviders\PinterestServiceProvider::class,
+]
 ```
 
 After you have initialized the class you can get a login URL:
@@ -147,7 +144,7 @@ Available methods for the collection class:
 
 ```php
 $pins = Pinterest::user()->getMeLikes();
-$pins()->all();
+$pins->all();
 ```
 
 Returns: `array<Model>`
@@ -157,7 +154,7 @@ Returns: `array<Model>`
 
 ```php
 $pins = Pinterest::user()->getMeLikes();
-$pins()->get(0);
+$pins->get(0);
 ```
 
 Returns: `Model`
@@ -168,7 +165,7 @@ Returns: `Model`
 
 ```php
 $pins = Pinterest::user()->getMeLikes();
-$pins()->hasNextPage();
+$pins->hasNextPage();
 ```
 
 Returns: `Boolean`
