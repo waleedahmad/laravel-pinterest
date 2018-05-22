@@ -12,6 +12,9 @@ namespace WaleedAhmad\Pinterest;
 
 use WaleedAhmad\Pinterest\Auth\PinterestOAuth;
 use WaleedAhmad\Pinterest\Endpoints\Users;
+use WaleedAhmad\Pinterest\Endpoints\Following;
+use WaleedAhmad\Pinterest\Endpoints\Boards;
+use WaleedAhmad\Pinterest\Endpoints\Pins;
 use WaleedAhmad\Pinterest\Utils\CurlBuilder;
 use WaleedAhmad\Pinterest\Transport\Request;
 use WaleedAhmad\Pinterest\Exceptions\InvalidEndpointException;
@@ -66,6 +69,11 @@ class Pinterest {
         $this->auth = new PinterestOAuth($client_id, $client_secret, $this->request);
     }
 
+    /**
+     * Get a cached instance of Users
+     * @return mixed
+     * @throws InvalidEndpointException
+     */
     public function user(){
         $endpoint = strtolower('users');
         $class = "\\WaleedAhmad\\Pinterest\\Endpoints\\" . ucfirst($endpoint);
@@ -85,6 +93,11 @@ class Pinterest {
         return $this->cachedEndpoints[$endpoint];
     }
 
+    /**
+     * Get a cached instance of Boards
+     * @return mixed
+     * @throws InvalidEndpointException
+     */
     public function boards(){
         $endpoint = strtolower('boards');
         $class = "\\WaleedAhmad\\Pinterest\\Endpoints\\" . ucfirst($endpoint);
@@ -96,7 +109,7 @@ class Pinterest {
                 throw new InvalidEndpointException;
             }
 
-            $obj = new Users($this->request, $this);
+            $obj = new Boards($this->request, $this);
 
 
             $this->cachedEndpoints[$endpoint] = $obj;
@@ -105,8 +118,13 @@ class Pinterest {
         return $this->cachedEndpoints[$endpoint];
     }
 
+    /**
+     * Get a cached instance of Following
+     * @return mixed
+     * @throws InvalidEndpointException
+     */
     public function following(){
-        $endpoint = strtolower('boards');
+        $endpoint = strtolower('following');
         $class = "\\WaleedAhmad\\Pinterest\\Endpoints\\" . ucfirst($endpoint);
 
         // Check if an instance has already been initiated
@@ -116,7 +134,7 @@ class Pinterest {
                 throw new InvalidEndpointException;
             }
 
-            $obj = new Users($this->request, $this);
+            $obj = new Following($this->request, $this);
 
             $this->cachedEndpoints[$endpoint] = $obj;
         }
@@ -124,8 +142,13 @@ class Pinterest {
         return $this->cachedEndpoints[$endpoint];
     }
 
+    /**
+     * Get a cached instance of Pins
+     * @return mixed
+     * @throws InvalidEndpointException
+     */
     public function pins(){
-        $endpoint = strtolower('boards');
+        $endpoint = strtolower('pins');
         $class = "\\WaleedAhmad\\Pinterest\\Endpoints\\" . ucfirst($endpoint);
 
         // Check if an instance has already been initiated
@@ -135,7 +158,7 @@ class Pinterest {
                 throw new InvalidEndpointException;
             }
 
-            $obj = new Users($this->request, $this);
+            $obj = new Pins($this->request, $this);
 
             $this->cachedEndpoints[$endpoint] = $obj;
         }

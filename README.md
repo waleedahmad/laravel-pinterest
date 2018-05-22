@@ -26,12 +26,12 @@ Add service provider for `$providers[]` array in `config/app.php` array.
 ```php
 'providers' => [
     [...] // other service providers
-    \WaleedAhmad\Pinterest\ServiceProviders\PinterestServiceProvider::class,
+    \waleedahmad\Pinterest\ServiceProviders\PinterestServiceProvider::class,
 ]
 ```
 Run `vendor:publish` command to copy pinterest configuration to app configs directory.
 ```$xslt
-php artisan vendor:publish --provider="WaleedAhmad\Pinterest\ServiceProviders\PinterestServiceProvider"
+php artisan vendor:publish --provider="waleedahmad\Pinterest\ServiceProviders\PinterestServiceProvider"
 ```
 
 Update `.env` file and fill in these `env` variables. 
@@ -97,9 +97,9 @@ Response:
 
 ```json
 {
-    "id": "244390854687463150",
+    "id": "503066358284560467",
     "username": null,
-    "first_name": "Waleed ",
+    "first_name": "Waleed",
     "last_name": "Ahmad",
     "bio": null,
     "created_at": null,
@@ -120,21 +120,21 @@ The response will now be:
 
 ```json
 {
-    "id": "244390854687463150",
+    "id": "503066358284560467",
     "username": "waleedahmad",
-    "first_name": "Waleed ",
+    "first_name": "Waleed",
     "last_name": "Ahmad",
     "bio": null,
     "created_at": null,
     "counts": null,
     "image": {
         "small": {
-                "url": "http://media-cache-ak0.pinimg.com/avatars/WaleedAhmad_1438089829_30.jpg",
+                "url": "http://media-cache-ak0.pinimg.com/avatars/waleedahmad_1438089829_30.jpg",
                 "width": 30,
                 "height": 30
             },
             "large": {
-                "url": "http://media-cache-ak0.pinimg.com/avatars/WaleedAhmad_1438089829_280.jpg",
+                "url": "http://media-cache-ak0.pinimg.com/avatars/waleedahmad_1438089829_280.jpg",
                 "width": 280,
                 "height": 280
             }
@@ -155,7 +155,7 @@ Available methods for the collection class:
 `all()`
 
 ```php
-$pins = Pinterest::user()->getMeLikes();
+$pins = Pinterest::user()->getMePins();
 $pins->all();
 ```
 
@@ -165,7 +165,7 @@ Returns: `array<Model>`
 `get( int $index )`
 
 ```php
-$pins = Pinterest::user()->getMeLikes();
+$pins = Pinterest::user()->getMePins();
 $pins->get(0);
 ```
 
@@ -176,7 +176,7 @@ Returns: `Model`
 `hasNextPage()`
 
 ```php
-$pins = Pinterest::user()->getMeLikes();
+$pins = Pinterest::user()->getMePins();
 $pins->hasNextPage();
 ```
 
@@ -276,7 +276,7 @@ Returns: `User`
 `find( string $username_or_id );`
 
 ```php
-Pinterest::user()->find('WaleedAhmad');
+Pinterest::user()->find('waleedahmad');
 ```
 
 Returns: `User`
@@ -317,17 +317,8 @@ Pinterest::user()->getMeBoards();
 
 Returns: `Collection<Board>`
 
-### Get user's likes
-`getMeLikes( array $data );`
-
-```php
-Pinterest::user()->getMeLikes();
-```
-
-Returns: `Collection<Pin>`
-
 ### Get user's followers
-`getMeLikes( array $data );`
+`getMeFollowers( array $data );`
 
 ```php
 Pinterest::user()->getMeFollowers();
@@ -343,7 +334,7 @@ The methods below are available through `Pinterest::boards`.
 `get( string $board_id, array $data );`
 
 ```php
-Pinterest::boards()->get("WaleedAhmad/pinterest-api-test");
+Pinterest::boards()->get("waleedahmad/pinterest-laravel");
 ```
 
 Returns: `Board`
@@ -364,7 +355,7 @@ Returns: `Board`
 `edit( string $board_id, array $data, string $fields = null );`
 
 ```php
-Pinterest::boards-edit("WaleedAhmad/pinterest-api-test", array(
+Pinterest::boards-edit("waleedahmad/pinterest-laravel", array(
     "name"  => "Test board after edit"
 ));
 ```
@@ -375,7 +366,7 @@ Returns: `Board`
 `delete( string $board_id, array $data );`
 
 ```php
-Pinterest::boards()->delete("WaleedAhmad/pinterest-api-test");
+Pinterest::boards()->delete("waleedahmad/pinterest-laravel");
 ```
 
 Returns: `True|PinterestException`
@@ -397,7 +388,7 @@ Returns: `Pin`
 `fromBoard( string $board_id, array $data );`
 
 ```php
-Pinterest::pins()->fromBoard("WaleedAhmad/pinterest-api-test");
+Pinterest::pins()->fromBoard("waleedahmad/pinterest-laravel");
 ```
 
 Returns: `Collection<Pin>`
@@ -411,7 +402,7 @@ Creating a pin with an image hosted somewhere else:
 Pinterest::pins()->create(array(
     "note"          => "Test board from API",
     "image_url"     => "https://download.unsplash.com/photo-1438216983993-cdcd7dea84ce",
-    "board"         => "WaleedAhmad/pinterest-api-test"
+    "board"         => "waleedahmad/pinterest-laravel"
 ));
 ```
 
@@ -421,7 +412,7 @@ Creating a pin with an image located on the server:
 Pinterest::pins()->create(array(
     "note"          => "Test board from API",
     "image"         => "/path/to/image.png",
-    "board"         => "WaleedAhmad/pinterest-api-test"
+    "board"         => "waleedahmad/pinterest-laravel"
 ));
 ```
 
@@ -431,7 +422,7 @@ Creating a pin with a base64 encoded image:
 Pinterest::pins()->create(array(
     "note"          => "Test board from API",
     "image_base64"  => "[base64 encoded image]",
-    "board"         => "WaleedAhmad/pinterest-api-test"
+    "board"         => "waleedahmad/pinterest-laravel"
 ));
 ```
 
@@ -494,7 +485,7 @@ Returns: `Collection<Interest>`
 `followUser( string $username_or_id );`
 
 ```php
-Pinterest::following()->followUser("WaleedAhmad");
+Pinterest::following()->followUser("waleedahmad");
 ```
 
 Returns: `True|PinterestException`
@@ -503,7 +494,7 @@ Returns: `True|PinterestException`
 `unfollowUser( string $username_or_id );`
 
 ```php
-Pinterest::following()->unfollowUser("WaleedAhmad");
+Pinterest::following()->unfollowUser("waleedahmad");
 ```
 
 Returns: `True|PinterestException`
