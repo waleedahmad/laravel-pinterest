@@ -1,16 +1,16 @@
-## ![](http://i.imgur.com/cacgQlq.png)  Pinterest API - PHP
+## ![](http://i.imgur.com/cacgQlq.png)  Pinterest API - Laravel
 
 [![](https://travis-ci.org/WaleedAhmad/Pinterest-API-PHP.svg)](https://travis-ci.org/WaleedAhmad/Pinterest-API-PHP)
 [![](https://img.shields.io/scrutinizer/g/WaleedAhmad/Pinterest-API-PHP.svg)](https://scrutinizer-ci.com/g/WaleedAhmad/Pinterest-API-PHP/?branch=master)
 [![](https://img.shields.io/scrutinizer/coverage/g/WaleedAhmad/Pinterest-API-PHP.svg)](https://scrutinizer-ci.com/g/WaleedAhmad/Pinterest-API-PHP/?branch=master)
 [![Packagist](https://img.shields.io/packagist/v/WaleedAhmad/pinterest-api-php.svg)](https://packagist.org/packages/WaleedAhmad/pinterest-api-php)
-[![Support me with some coffee](https://img.shields.io/badge/donate-paypal-orange.svg)](https://www.paypal.me/WaleedAhmad)
 -------------------
 
-A PHP wrapper for the official [Pinterest API](https://dev.pinterest.com).
+A Package for using official [Pinterest API](https://dev.pinterest.com) with Laravel.
 
 # Requirements
 - PHP 5.4 or higher
+- Laravel 5.0 or Above
 - cURL
 - Registered Pinterest App
 
@@ -23,10 +23,8 @@ To use the Pinterest API you have to register yourself as a developer and [creat
 The Pinterest API wrapper is available on Composer.
 
 ```
-composer require WaleedAhmad/Pinterest-API-PHP
+composer require waleedahmad/laravel-pinterest
 ```
-
-If you're not using Composer (which you should start using, unless you've got a good reason not to) you can include the `autoload.php` file in your project.
 
 ## Simple Example
 ```php
@@ -38,7 +36,7 @@ $pinterest = new Pinterest(CLIENT_ID, CLIENT_SECRET);
 After you have initialized the class you can get a login URL:
 
 ```php
-$loginurl = $pinterest->auth->getLoginUrl(CALLBACK_URL, array('read_public'));
+$loginurl = Pinterest::auth()->getLoginUrl(CALLBACK_URL, array('read_public'));
 echo '<a href=' . $loginurl . '>Authorize Pinterest</a>';
 ```
 
@@ -48,8 +46,8 @@ After your user has used the login link to authorize he will be send back to the
 
 ```php
 if(isset($_GET["code"])){
-    $token = $pinterest->auth->getOAuthToken($_GET["code"]);
-    $pinterest->auth->setOAuthToken($token->access_token);
+    $token = Pinterest::auth()->getOAuthToken($_GET["code"]);
+    Pinterest::auth()->setOAuthToken($token->access_token);
 }
 ```
 
@@ -58,7 +56,7 @@ if(isset($_GET["code"])){
 To get the profile of the current logged in user you can use the `Users::me(<array>);` method.
 
 ```php
-$me = $pinterest->users->me();
+$me = Pinterest::user()->me();
 echo $me;
 ```
 
@@ -83,7 +81,7 @@ Models also show the available fields (which are also described in the Pinterest
 If you want more fields you can specify these in the `$data` (GET requests) or `$fields` (PATCH requests) array. Example:
 
 ```php
-$pinterest->users->me();
+Pinterest::user()->me();
 ```
 
 Response:
@@ -104,7 +102,7 @@ Response:
 By default, not all fields are returned. The returned data from the API has been parsed into the `User` model. Every field in this model can be filled by parsing an extra `$data` array with the key `fields`. Say we want the user's username, first_name, last_name and image (small and large):
 
 ```php
-$pinterest->users->me(array(
+Pinterest::user()->me(array(
     'fields' => 'username,first_name,last_name,image[small,large]'
 ));
 ```
@@ -148,8 +146,8 @@ Available methods for the collection class:
 `all()`
 
 ```php
-$pins = $pinterest->users->getMeLikes();
-$pins->all();
+$pins = Pinterest::user()->getMeLikes();
+$pins()->all();
 ```
 
 Returns: `array<Model>`
@@ -158,8 +156,8 @@ Returns: `array<Model>`
 `get( int $index )`
 
 ```php
-$pins = $pinterest->users->getMeLikes();
-$pins->get(0);
+$pins = Pinterest::user()->getMeLikes();
+$pins()->get(0);
 ```
 
 Returns: `Model`
@@ -169,8 +167,8 @@ Returns: `Model`
 `hasNextPage()`
 
 ```php
-$pins = $pinterest->users->getMeLikes();
-$pins->hasNextPage();
+$pins = Pinterest::user()->getMeLikes();
+$pins()->hasNextPage();
 ```
 
 Returns: `Boolean`
@@ -181,13 +179,13 @@ Returns: `Boolean`
 
 ## Authentication
 
-The methods below are available through `$pinterest->auth`.
+The methods below are available through `Pinterest::auth`.
 
 ### Get login URL
 `getLoginUrl(string $redirect_uri, array $scopes, string $response_type = "code");`
 
 ```php
-$pinterest->auth->getLoginUrl("https://pinterest.dev/callback.php", array("read_public"));
+Pinterest::auth()->getLoginUrl("https://pinterest.dev/callback.php", array("read_public"));
 ```
 
 Check the [Pinterest documentation](https://dev.pinterest.com/docs/api/overview/#scopes) for the available scopes.
@@ -198,21 +196,21 @@ Check the [Pinterest documentation](https://dev.pinterest.com/docs/api/overview/
 `getOAuthToken( string $code );`
 
 ```php
-$pinterest->auth->getOAuthToken($code);
+Pinterest::auth()->getOAuthToken($code);
 ```
 
 ### Set access_token
 `setOAuthToken( string $access_token );`
 
 ```php
-$pinterest->auth->setOAuthToken($access_token);
+Pinterest::auth()->setOAuthToken($access_token);
 ```
 
 ### Get state
 `getState();`
 
 ```php
-$pinterest->auth->getState();
+Pinterest::auth()->getState();
 ```
 
 Returns: `string`
@@ -223,7 +221,7 @@ Returns: `string`
 This method can be used to set a state manually, but this isn't required since the API will automatically generate a random state on initialize.
 
 ```php
-$pinterest->auth->setState($state);
+Pinterest::auth()->setState($state);
 ```
 
 ## Rate limit
@@ -234,7 +232,7 @@ $pinterest->auth->setState($state);
 This method can be used to get the maximum number of requests.
 
 ```php
-$pinterest->getRateLimit();
+Pinterest::getRateLimit();
 ```
 
 Returns: `int`
@@ -245,14 +243,14 @@ Returns: `int`
 This method can be used to get the remaining number of calls.
 
 ```php
-$pinterest->getRateLimitRemaining();
+Pinterest::getRateLimitRemaining();
 ```
 
 Returns: `int`
 
 ## Users
 
-The methods below are available through `$pinterest->users`.
+The methods below are available through `Pinterest::users`.
 
 > You also cannot access a user’s boards or Pins who has not authorized your app.
 
@@ -260,7 +258,7 @@ The methods below are available through `$pinterest->users`.
 `me( array $data );`
 
 ```php
-$pinterest->users->me();
+Pinterest::user()->me();
 ```
 
 Returns: `User`
@@ -269,7 +267,7 @@ Returns: `User`
 `find( string $username_or_id );`
 
 ```php
-$pinterest->users->find('WaleedAhmad');
+Pinterest::user()->find('WaleedAhmad');
 ```
 
 Returns: `User`
@@ -278,7 +276,7 @@ Returns: `User`
 `getMePins( array $data );`
 
 ```php
-$pinterest->users->getMePins();
+Pinterest::user()->getMePins();
 ```
 
 Returns: `Collection<Pin>`
@@ -287,7 +285,7 @@ Returns: `Collection<Pin>`
 `getMePins( string $query, array $data );`
 
 ```php
-$pinterest->users->searchMePins("cats");
+Pinterest::user()->searchMePins("cats");
 ```
 
 Returns: `Collection<Pin>`
@@ -296,7 +294,7 @@ Returns: `Collection<Pin>`
 `searchMeBoards( string $query, array $data );`
 
 ```php
-$pinterest->users->searchMeBoards("cats");
+Pinterest::user()->searchMeBoards("cats");
 ```
 
 Returns: `Collection<Board>`
@@ -305,7 +303,7 @@ Returns: `Collection<Board>`
 `getMeBoards( array $data );`
 
 ```php
-$pinterest->users->getMeBoards();
+Pinterest::user()->getMeBoards();
 ```
 
 Returns: `Collection<Board>`
@@ -314,7 +312,7 @@ Returns: `Collection<Board>`
 `getMeLikes( array $data );`
 
 ```php
-$pinterest->users->getMeLikes();
+Pinterest::user()->getMeLikes();
 ```
 
 Returns: `Collection<Pin>`
@@ -323,20 +321,20 @@ Returns: `Collection<Pin>`
 `getMeLikes( array $data );`
 
 ```php
-$pinterest->users->getMeFollowers();
+Pinterest::user()->getMeFollowers();
 ```
 
 Returns: `Collection<Pin>`
 
 ## Boards
 
-The methods below are available through `$pinterest->boards`.
+The methods below are available through `Pinterest::boards`.
 
 ### Get board
 `get( string $board_id, array $data );`
 
 ```php
-$pinterest->boards->get("WaleedAhmad/pinterest-api-test");
+Pinterest::boards()->get("WaleedAhmad/pinterest-api-test");
 ```
 
 Returns: `Board`
@@ -345,7 +343,7 @@ Returns: `Board`
 `create( array $data );`
 
 ```php
-$pinterest->boards->create(array(
+Pinterest::boards()->create(array(
     "name"          => "Test board from API",
     "description"   => "Test Board From API Test"
 ));
@@ -357,7 +355,7 @@ Returns: `Board`
 `edit( string $board_id, array $data, string $fields = null );`
 
 ```php
-$pinterest->boards-edit("WaleedAhmad/pinterest-api-test", array(
+Pinterest::boards-edit("WaleedAhmad/pinterest-api-test", array(
     "name"  => "Test board after edit"
 ));
 ```
@@ -368,20 +366,20 @@ Returns: `Board`
 `delete( string $board_id, array $data );`
 
 ```php
-$pinterest->boards->delete("WaleedAhmad/pinterest-api-test");
+Pinterest::boards()->delete("WaleedAhmad/pinterest-api-test");
 ```
 
 Returns: `True|PinterestException`
 
 ## Pins
 
-The methods below are available through `$pinterest->pins`.
+The methods below are available through `Pinterest::pins`.
 
 ### Get pin
 `get( string $pin_id, array $data );`
 
 ```php
-$pinterest->pins->get("181692166190246650");
+Pinterest::pins()->get("181692166190246650");
 ```
 
 Returns: `Pin`
@@ -390,7 +388,7 @@ Returns: `Pin`
 `fromBoard( string $board_id, array $data );`
 
 ```php
-$pinterest->pins->fromBoard("WaleedAhmad/pinterest-api-test");
+Pinterest::pins()->fromBoard("WaleedAhmad/pinterest-api-test");
 ```
 
 Returns: `Collection<Pin>`
@@ -401,7 +399,7 @@ Returns: `Collection<Pin>`
 Creating a pin with an image hosted somewhere else:
 
 ```php
-$pinterest->pins->create(array(
+Pinterest::pins()->create(array(
     "note"          => "Test board from API",
     "image_url"     => "https://download.unsplash.com/photo-1438216983993-cdcd7dea84ce",
     "board"         => "WaleedAhmad/pinterest-api-test"
@@ -411,7 +409,7 @@ $pinterest->pins->create(array(
 Creating a pin with an image located on the server:
 
 ```php
-$pinterest->pins->create(array(
+Pinterest::pins()->create(array(
     "note"          => "Test board from API",
     "image"         => "/path/to/image.png",
     "board"         => "WaleedAhmad/pinterest-api-test"
@@ -421,7 +419,7 @@ $pinterest->pins->create(array(
 Creating a pin with a base64 encoded image:
 
 ```php
-$pinterest->pins->create(array(
+Pinterest::pins()->create(array(
     "note"          => "Test board from API",
     "image_base64"  => "[base64 encoded image]",
     "board"         => "WaleedAhmad/pinterest-api-test"
@@ -436,7 +434,7 @@ Returns: `Pin`
 `edit( string $pin_id, array $data, string $fields = null );`
 
 ```php
-$pinterest->pins->edit("181692166190246650", array(
+Pinterest::pins()->edit("181692166190246650", array(
     "note"  => "Updated name"
 ));
 ```
@@ -447,20 +445,20 @@ Returns: `Pin`
 `delete( string $pin_id, array $data );`
 
 ```php
-$pinterest->pins->delete("181692166190246650");
+Pinterest::pins()->delete("181692166190246650");
 ```
 
 Returns: `True|PinterestException`
 
 ## Following
 
-The methods below are available through `$pinterest->following`.
+The methods below are available through `Pinterest::following`.
 
 ### Following users
 `users( array $data );`
 
 ```php
-$pinterest->following->users();
+Pinterest::following()->users();
 ```
 
 Returns: `Collection<User>`
@@ -469,7 +467,7 @@ Returns: `Collection<User>`
 `boards( array $data );`
 
 ```php
-$pinterest->following->boards();
+Pinterest::following()->boards();
 ```
 
 Returns: `Collection<Board>`
@@ -478,7 +476,7 @@ Returns: `Collection<Board>`
 `interests( array $data );`
 
 ```php
-$pinterest->following->interests();
+Pinterest::following()->interests();
 ```
 
 Returns: `Collection<Interest>`
@@ -487,7 +485,7 @@ Returns: `Collection<Interest>`
 `followUser( string $username_or_id );`
 
 ```php
-$pinterest->following->followUser("WaleedAhmad");
+Pinterest::following()->followUser("WaleedAhmad");
 ```
 
 Returns: `True|PinterestException`
@@ -496,7 +494,7 @@ Returns: `True|PinterestException`
 `unfollowUser( string $username_or_id );`
 
 ```php
-$pinterest->following->unfollowUser("WaleedAhmad");
+Pinterest::following()->unfollowUser("WaleedAhmad");
 ```
 
 Returns: `True|PinterestException`
@@ -505,7 +503,7 @@ Returns: `True|PinterestException`
 `followBoard( string $board_id );`
 
 ```php
-$pinterest->following->followBoard("503066289565421201");
+Pinterest::following()->followBoard("503066289565421201");
 ```
 
 Returns: `True|PinterestException`
@@ -514,7 +512,7 @@ Returns: `True|PinterestException`
 `unfollowBoard( string $board_id );`
 
 ```php
-$pinterest->following->unfollowBoard("503066289565421201");
+Pinterest::following()->unfollowBoard("503066289565421201");
 ```
 
 Returns: `True|PinterestException`
@@ -526,7 +524,7 @@ Returns: `True|PinterestException`
 `followInterest( string $interest );`
 
 ```php
-$pinterest->following->followInterest("architecten-911112299766");
+Pinterest::following()->followInterest("architecten-911112299766");
 ```
 
 Returns: `True|PinterestException`
@@ -538,13 +536,7 @@ Returns: `True|PinterestException`
 `unfollowInterest( string $interest );`
 
 ```php
-$pinterest->following->unfollowInterest("architecten-911112299766");
+Pinterest::following()->unfollowInterest("architecten-911112299766");
 ```
 
 Returns: `True|PinterestException`
-
-# Examples
-
-Use can take a look at the `./demo` directory for a simple example.
-
-Let me know if you have an (example) project using the this library.

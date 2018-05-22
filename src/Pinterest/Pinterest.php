@@ -11,6 +11,7 @@
 namespace WaleedAhmad\Pinterest;
 
 use WaleedAhmad\Pinterest\Auth\PinterestOAuth;
+use WaleedAhmad\Pinterest\Endpoints\Users;
 use WaleedAhmad\Pinterest\Utils\CurlBuilder;
 use WaleedAhmad\Pinterest\Transport\Request;
 use WaleedAhmad\Pinterest\Exceptions\InvalidEndpointException;
@@ -65,18 +66,8 @@ class Pinterest {
         $this->auth = new PinterestOAuth($client_id, $client_secret, $this->request);
     }
 
-    /**
-     * Get an Pinterest API endpoint
-     *
-     * @access public
-     * @param string $endpoint
-     * @return mixed
-     * @throws Exceptions\InvalidEndpointException
-     * @throws \ReflectionException
-     */
-    public function __get($endpoint)
-    {
-        $endpoint = strtolower($endpoint);
+    public function user(){
+        $endpoint = strtolower('users');
         $class = "\\WaleedAhmad\\Pinterest\\Endpoints\\" . ucfirst($endpoint);
 
         // Check if an instance has already been initiated
@@ -86,10 +77,65 @@ class Pinterest {
                 throw new InvalidEndpointException;
             }
 
-            // Create a reflection of the called class and initialize it
-            // with a reference to the request class
-            $ref = new \ReflectionClass($class);
-            $obj = $ref->newInstanceArgs([$this->request, $this]);
+            $obj = new Users($this->request, $this);
+
+            $this->cachedEndpoints[$endpoint] = $obj;
+        }
+
+        return $this->cachedEndpoints[$endpoint];
+    }
+
+    public function boards(){
+        $endpoint = strtolower('boards');
+        $class = "\\WaleedAhmad\\Pinterest\\Endpoints\\" . ucfirst($endpoint);
+
+        // Check if an instance has already been initiated
+        if (!isset($this->cachedEndpoints[$endpoint])) {
+            // Check endpoint existence
+            if (!class_exists($class)) {
+                throw new InvalidEndpointException;
+            }
+
+            $obj = new Users($this->request, $this);
+
+
+            $this->cachedEndpoints[$endpoint] = $obj;
+        }
+
+        return $this->cachedEndpoints[$endpoint];
+    }
+
+    public function following(){
+        $endpoint = strtolower('boards');
+        $class = "\\WaleedAhmad\\Pinterest\\Endpoints\\" . ucfirst($endpoint);
+
+        // Check if an instance has already been initiated
+        if (!isset($this->cachedEndpoints[$endpoint])) {
+            // Check endpoint existence
+            if (!class_exists($class)) {
+                throw new InvalidEndpointException;
+            }
+
+            $obj = new Users($this->request, $this);
+
+            $this->cachedEndpoints[$endpoint] = $obj;
+        }
+
+        return $this->cachedEndpoints[$endpoint];
+    }
+
+    public function pins(){
+        $endpoint = strtolower('boards');
+        $class = "\\WaleedAhmad\\Pinterest\\Endpoints\\" . ucfirst($endpoint);
+
+        // Check if an instance has already been initiated
+        if (!isset($this->cachedEndpoints[$endpoint])) {
+            // Check endpoint existence
+            if (!class_exists($class)) {
+                throw new InvalidEndpointException;
+            }
+
+            $obj = new Users($this->request, $this);
 
             $this->cachedEndpoints[$endpoint] = $obj;
         }
@@ -119,5 +165,13 @@ class Pinterest {
     {
         $header = $this->request->getHeaders();
         return (isset($header['X-Ratelimit-Remaining']) ? $header['X-Ratelimit-Remaining'] : 'unknown');
+    }
+
+    /**
+     * @access public
+     * @return PinterestOAuth
+     */
+    public function auth(){
+        return $this->auth;
     }
 }

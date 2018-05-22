@@ -104,20 +104,6 @@ class Users extends Endpoint {
     }
 
     /**
-     * Get the authenticated user's likes
-     *
-     * @access public
-     * @param array     $data
-     * @throws Exceptions/PinterestExceptions
-     * @return Collection
-     */
-    public function getMeLikes(array $data = [])
-    {
-        $response = $this->request->get("me/likes", $data);
-        return new Collection($this->master, $response, "Pin");
-    }
-
-    /**
      * Get the authenticated user's followers
      *
      * @access public

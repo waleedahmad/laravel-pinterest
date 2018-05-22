@@ -13,7 +13,6 @@
     "type": "library",
     "keywords": [
         "api",
-        "wrapper",
         "pinterest",
         "laravel"
     ],
