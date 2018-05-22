@@ -28,5 +28,12 @@
         "psr-4": {
             "WaleedAhmad\\Pinterest\\": "src/Pinterest"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "WaleedAhmad\\Pinterest\\ServiceProviders\\PinterestServiceProvider"
+            ]
+        }
     }
 }
