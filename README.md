@@ -97,10 +97,10 @@ Response:
 
 ```json
 {
-    "id": "503066358284560467",
+    "id": "244390854687463150",
     "username": null,
-    "first_name": "Dirk ",
-    "last_name": "Groenen",
+    "first_name": "Waleed ",
+    "last_name": "Ahmad",
     "bio": null,
     "created_at": null,
     "counts": null,
@@ -120,10 +120,10 @@ The response will now be:
 
 ```json
 {
-    "id": "503066358284560467",
-    "username": "WaleedAhmad",
-    "first_name": "Dirk ",
-    "last_name": "Groenen",
+    "id": "244390854687463150",
+    "username": "waleedahmad",
+    "first_name": "Waleed ",
+    "last_name": "Ahmad",
     "bio": null,
     "created_at": null,
     "counts": null,
