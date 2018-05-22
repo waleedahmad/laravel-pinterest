@@ -15,13 +15,13 @@ To use the Pinterest API you have to register yourself as a developer and [creat
 > The terms `client_id` and `client_secret` are in this case `app_id` and `app_secret`.
 
 ## Installation
-This Package is available on Composer.
+The Pinterest API wrapper is available on Composer.
 
 ```
 composer require waleedahmad/laravel-pinterest
 ```
 
-## Usage
+## Configuration
 Add service provider for `$providers[]` array in `config/app.php` array.
 ```php
 'providers' => [
@@ -29,7 +29,19 @@ Add service provider for `$providers[]` array in `config/app.php` array.
     \WaleedAhmad\Pinterest\ServiceProviders\PinterestServiceProvider::class,
 ]
 ```
+Run `vendor:publish` command to copy pinterest configuration to app configs directory.
+```$xslt
+php artisan vendor:publish --provider="WaleedAhmad\Pinterest\ServiceProviders\PinterestServiceProvider"
+```
 
+Update `.env` file and fill in these `env` variables. 
+```
+PINTEREST_KEY=YOUR_APP_KEY
+PINTEREST_SECRET=YOUR_APP_SECRET
+PINTEREST_REDIRECT_URI=YOUR_CALLBACK_URL
+```
+
+## Getting access token in exchange for code
 After you have initialized the class you can get a login URL:
 
 ```php

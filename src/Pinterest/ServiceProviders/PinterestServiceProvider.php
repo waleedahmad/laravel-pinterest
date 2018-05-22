@@ -14,7 +14,9 @@ class PinterestServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->publishes([
+            __DIR__.'/../Config/pinterest.php' => config_path('pinterest.php'),
+        ]);
     }
 
     /**
@@ -26,8 +28,8 @@ class PinterestServiceProvider extends ServiceProvider
     {
         $this->app->bind('Pinterest', function(){
             return new Pinterest(
-                env('PINTEREST_KEY'),
-                env('PINTEREST_SECRET')
+                config('pinterest.config.client_id'),
+                config('pinterest.config.client_secret')
             );
         });
     }
