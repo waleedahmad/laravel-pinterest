@@ -26,12 +26,12 @@ Add service provider for `$providers[]` array in `config/app.php` array.
 ```php
 'providers' => [
     [...] // other service providers
-    \waleedahmad\Pinterest\ServiceProviders\PinterestServiceProvider::class,
+    \WaleedAhmad\Pinterest\ServiceProviders\PinterestServiceProvider::class,
 ]
 ```
 Run `vendor:publish` command to copy pinterest configuration to app configs directory.
 ```$xslt
-php artisan vendor:publish --provider="waleedahmad\Pinterest\ServiceProviders\PinterestServiceProvider"
+php artisan vendor:publish --provider="WaleedAhmad\Pinterest\ServiceProviders\PinterestServiceProvider"
 ```
 
 Update `.env` file and fill in these `env` variables. 
