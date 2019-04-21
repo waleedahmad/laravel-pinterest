@@ -18,7 +18,7 @@ To use the Pinterest API you have to register yourself as a developer and [creat
 The Pinterest API wrapper is available on Composer.
 
 ```
-composer require waleedahmad/laravel-pinterest
+composer require waleedahmad/pinterest-laravel
 ```
 
 ## Configuration
